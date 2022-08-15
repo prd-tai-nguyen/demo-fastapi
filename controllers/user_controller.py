@@ -15,5 +15,5 @@ def find_user(user_id: int, user=Depends(auth_repo.validate_token)):
 
 
 @user_route.get("/", response_model=List[User])
-def find_user(request: Request, user=Depends(auth_repo.validate_token)):
+def find_users(request: Request, user=Depends(auth_repo.validate_token)):
     return user_repo.get_users(**request.query_params)
