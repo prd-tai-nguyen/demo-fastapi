@@ -1,8 +1,8 @@
 from typing import List
 
-from fastapi import Depends, Request, APIRouter, HTTPException
+from fastapi import Depends, Request, APIRouter, HTTPException, Header
 
-from schemas.post_schema import Post, PostCreate
+from schemas import Post, PostCreate, PostResponse
 from repo.auth_repo import auth_repo
 from repo.post_repo import post_repo
 
@@ -21,20 +21,26 @@ def find_by_id(post_id: int, user=Depends(auth_repo.validate_token)):
     return result
 
 
-@post_route.get("/", response_model=List[Post])
-def find(request: Request, user=Depends(auth_repo.validate_token)):
-    return post_repo.find(user_id=user.id, **request.query_params)
+@post_route.get("/")
+def find(limit: int = 10, skip: int = 0, user=Depends(auth_repo.validate_token)):
+  
+    return post_repo.find(limit=limit, skip = skip, user_id=user.id)
+
+
+@post_route.get("/{post_id}/comment", response_model=Post)
+def find_comment(post_id: int, user=Depends(auth_repo.validate_token)):
+    return post_repo.find_comment(user_id=user.id, post_id=post_id)
 
 
 @post_route.post("/", response_model=Post)
-def create(post_data: PostCreate, user=Depends(auth_repo.validate_token)):
-    return post_repo.create(post_data=post_data, user_id=user.id)
+def create(data: PostCreate, user=Depends(auth_repo.validate_token)):
+    return post_repo.create(data=data, user_id=user.id)
 
 
 @post_route.patch("/{post_id}")
-def update(post_id: int, post_data: PostCreate, user=Depends(auth_repo.validate_token)):
+def update(post_id: int, data: PostCreate, user=Depends(auth_repo.validate_token)):
     result = post_repo.update(
-        post_data=post_data, post_id=post_id, user_id=user.id)
+        data=data, post_id=post_id, user_id=user.id)
     if result is None:
         raise HTTPException(
             status_code=404,

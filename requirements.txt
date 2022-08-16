@@ -1,0 +1,6 @@
+fastapi
+uvicorn
+PyJWT
+sqlalchemy
+pymysql
+autopep8

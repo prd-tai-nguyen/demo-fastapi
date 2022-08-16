@@ -1,9 +1,8 @@
 from typing import List
 
-from fastapi import Depends, Request, APIRouter
+from fastapi import Depends, Request, APIRouter, HTTPException
 
-from schemas.user_schema import User
-from schemas.post_schema import Post
+from schemas import User, UserResponse
 from repo.auth_repo import auth_repo
 from repo.user_repo import user_repo
 
@@ -29,5 +28,5 @@ def find_by_id(user_id: int, user=Depends(auth_repo.validate_token)):
 
 
 @user_route.get("/", response_model=List[User])
-def find(request: Request, user=Depends(auth_repo.validate_token)):
-    return user_repo.find(**request.query_params)
+def find(limit: int = 10, skip: int = 0, request: Request = None, user=Depends(auth_repo.validate_token)):
+    return user_repo.find(limit=limit, skip=skip, **request.query_params)

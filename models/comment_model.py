@@ -4,12 +4,12 @@ from sqlalchemy.orm import relationship
 from config.db import Base
 
 
-class PostModel(Base):
-    __tablename__ = "posts"
+class CommentModel(Base):
+    __tablename__ = "comments"
 
     id = Column(Integer, primary_key=True, index=True)
     content = Column(String(255))
     user_id = Column(Integer, ForeignKey("users.id"))
-
-    user = relationship("UserModel", back_populates="posts")
-    comments = relationship("CommentModel", back_populates="post")
+    post_id = Column(Integer, ForeignKey("posts.id")) 
+    
+    post = relationship("PostModel", back_populates="comments")

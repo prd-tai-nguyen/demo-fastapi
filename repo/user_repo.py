@@ -1,12 +1,11 @@
-from models.user_model import UserModel
+from models import UserModel
 from repo.base_repo import BaseRepo
-import json
 
 class UserRepo(BaseRepo):
     def find_by_id(self, user_id: int):
         return self.db.query(UserModel).filter(UserModel.id == user_id).first()
 
-    def find(self, limit: int = 10, skip: int = 0 , **kwargs):
+    def find(self, limit: int, skip: int , **kwargs):
         query = self.db.query(UserModel)
        
         if "email" in kwargs:
