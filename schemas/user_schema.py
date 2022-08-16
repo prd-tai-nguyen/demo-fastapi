@@ -16,7 +16,7 @@ class User(BaseModel):
     email: str
     name: str
     is_active: bool
-    items: List[Post] = []
+    posts: List[Post] = []
    
     class Config:
         orm_mode = True

@@ -3,10 +3,10 @@ from repo.base_repo import BaseRepo
 import json
 
 class UserRepo(BaseRepo):
-    def get_user(self, user_id: int):
+    def find_by_id(self, user_id: int):
         return self.db.query(UserModel).filter(UserModel.id == user_id).first()
 
-    def get_users(self, limit: int = 10, skip: int = 0 , **kwargs):
+    def find(self, limit: int = 10, skip: int = 0 , **kwargs):
         query = self.db.query(UserModel)
        
         if "email" in kwargs:
@@ -15,5 +15,9 @@ class UserRepo(BaseRepo):
             query = query.filter(UserModel.name == kwargs['name'])
 
         return query.offset(skip).limit(limit).all()
+
+    def find_post(self, limit: int = 10, skip: int = 0 , user_id: int= None, **kwargs):
+        user = self.db.query(UserModel).filter(UserModel.id == user_id).offset(skip).limit(limit).first()
+        return user
 
 user_repo = UserRepo()

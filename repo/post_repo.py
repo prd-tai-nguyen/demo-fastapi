@@ -4,10 +4,10 @@ from repo.base_repo import BaseRepo
 import json
 
 class PostRepo(BaseRepo):
-    def get_post(self, post_id: int):
-        return self.db.query(PostModel).filter(PostModel.id == post_id).first()
+    def find_by_id(self, post_id: int, user_id: int):
+        return self.db.query(PostModel).filter(PostModel.id == post_id, PostModel.user_id == user_id).first()
 
-    def get_posts(self, limit: int = 10, skip: int = 0 , **kwargs):
+    def find(self, limit: int = 10, skip: int = 0, user_id: int = None, **kwargs):
         query = self.db.query(PostModel)
        
         # if "email" in kwargs:
@@ -15,29 +15,27 @@ class PostRepo(BaseRepo):
         # if "name" in kwargs:
         #     query = query.filter(UserModel.name == kwargs['name'])
 
-        return query.offset(skip).limit(limit).all()
+        return query.filter(PostModel.user_id == user_id).offset(skip).limit(limit).all()
 
-    def create_post(self, post_data: PostCreate, user_id: int):
+    def create(self, post_data: PostCreate, user_id: int):
         db_item = PostModel(**post_data.dict(), user_id=user_id)
         self.db.add(db_item)
         self.db.commit()
         self.db.refresh(db_item)
         return db_item
 
-    def update_post(self, post_data: PostCreate, post_id: int, user_id: int):
-        query = self.db.query(PostModel).filter(PostModel.id == post_id)
-        if(post is None):
+    def update(self, post_data: PostCreate, post_id: int, user_id: int):
+        result = self.db.query(PostModel).filter(PostModel.id == post_id, PostModel.user_id == user_id).update(post_data.dict())
+        if(result == 0):
             return None
 
-        post = query.update(post_data.dict())
-        return post
+        return result
     
-    def delete_post(self, post_id: int, user_id: int):
-        post = self.db.query(PostModel).filter(PostModel.id == post_id)
-        if(query is None):
+    def delete(self, post_id: int, user_id: int):
+        result = self.db.query(PostModel).filter(PostModel.id == post_id, PostModel.user_id == user_id).delete()
+        if(result == 0):
             return None
 
-        query = self.db.delete(post)
-        return query
+        return result
 
 post_repo = PostRepo()
