@@ -2,7 +2,7 @@ import hashlib
 import jwt
 import datetime
 
-from models.user_model import UserModel
+from models import UserModel
 from schemas.user_schema import UserCreate
 from fastapi import Depends, HTTPException
 from fastapi.security import OAuth2PasswordBearer

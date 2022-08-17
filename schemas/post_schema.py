@@ -1,6 +1,11 @@
 from pydantic import BaseModel
-from typing import List
+from typing import List, ForwardRef
+
 from .comment_schema import Comment
+
+
+# from .comment_schema import Comment
+UserResponseItem = ForwardRef("UserResponse")
 
 
 class PostCreate(BaseModel):
@@ -21,3 +26,6 @@ class Post(BaseModel):
 
     class Config:
         orm_mode = True
+
+
+PostResponse.update_forward_refs()

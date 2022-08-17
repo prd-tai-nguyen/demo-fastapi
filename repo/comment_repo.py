@@ -4,13 +4,8 @@ from repo.base_repo import BaseRepo
 
 
 class CommentRepo(BaseRepo):
-    def find_by_id(self, comment_id: int, user_id: int):
-        return self.db.query(CommentModel).filter(CommentModel.id == comment_id, CommentModel.user_id == user_id).first()
-
-    def find(self, limit: int = 10, skip: int = 0, user_id: int = None, post_id: int = None, **kwargs):
-        query = self.db.query(CommentModel)
-
-        return query.filter(CommentModel.user_id == user_id, CommentModel.post_id == post_id).offset(skip).limit(limit).all()
+    def find_by_id(self, comment_id: int):
+        return self.db.query(CommentModel).filter(CommentModel.id == comment_id).first()
 
     def create(self, data: CommentCreate, user_id: int):
         post = self.db.query(PostModel).filter(

@@ -9,12 +9,12 @@ from repo.user_repo import user_repo
 user_route = APIRouter()
 
 
-@user_route.get("/post", response_model=User)
+@user_route.get("/post", response_model=User, tags=["users"])
 def find_post(request: Request, user=Depends(auth_repo.validate_token)):
     return user_repo.find_post(user_id=user.id, **request.query_params)
 
 
-@user_route.get("/{user_id}", response_model=User)
+@user_route.get("/{user_id}", response_model=User, tags=["users"])
 def find_by_id(user_id: int, user=Depends(auth_repo.validate_token)):
     result = user_repo.find_by_id(user_id=user_id)
     if result is None:
@@ -27,6 +27,6 @@ def find_by_id(user_id: int, user=Depends(auth_repo.validate_token)):
     return result
 
 
-@user_route.get("/", response_model=List[User])
+@user_route.get("/", response_model=List[UserResponse], tags=["users"])
 def find(limit: int = 10, skip: int = 0, request: Request = None, user=Depends(auth_repo.validate_token)):
     return user_repo.find(limit=limit, skip=skip, **request.query_params)

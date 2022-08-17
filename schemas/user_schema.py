@@ -1,7 +1,7 @@
 from pydantic import BaseModel
 from typing import List
-from .post_schema import Post
 
+from .post_schema import Post
 
 class UserCreate(BaseModel):
     email: str
@@ -19,7 +19,6 @@ class UserResponse(BaseModel):
     email: str
     name: str
     is_active: bool
-    posts: List[Post] = []
 
 
 class User(BaseModel):

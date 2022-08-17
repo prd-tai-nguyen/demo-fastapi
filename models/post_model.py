@@ -11,5 +11,4 @@ class PostModel(Base):
     content = Column(String(255))
     user_id = Column(Integer, ForeignKey("users.id"))
 
-    user = relationship("UserModel", back_populates="posts")
     comments = relationship("CommentModel", back_populates="post")

@@ -13,7 +13,7 @@ class UserRepo(BaseRepo):
         if "name" in kwargs:
             query = query.filter(UserModel.name == kwargs['name'])
 
-        return query.offset(skip).limit(limit).all()
+        return query.offset(skip).limit(limit).with_entities(UserModel.id, UserModel.email, UserModel.name, UserModel.is_active).all()
 
     def find_post(self, limit: int = 10, skip: int = 0 , user_id: int= None, **kwargs):
         user = self.db.query(UserModel).filter(UserModel.id == user_id).offset(skip).limit(limit).first()

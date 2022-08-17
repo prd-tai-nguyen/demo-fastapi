@@ -4,3 +4,4 @@ PyJWT
 sqlalchemy
 pymysql
 autopep8
+pytest
