@@ -11,3 +11,5 @@ class CommentModel(Base):
     content = Column(String(255))
     user_id = Column(Integer, ForeignKey("users.id"))
     post_id = Column(Integer, ForeignKey("posts.id"))
+    
+    post = relationship("PostModel", back_populates="comments")
