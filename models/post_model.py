@@ -7,7 +7,7 @@ from config.db import Base
 class PostModel(Base):
     __tablename__ = "posts"
 
-    id = Column(Integer, primary_key=True, index=True)
+    id = Column(Integer, primary_key=True)
     content = Column(String(255))
     user_id = Column(Integer, ForeignKey("users.id"))
 
