@@ -13,5 +13,6 @@ class UserModel(Base):
     hashed_password = Column(String(255))
     is_active = Column(Boolean, default=True)
     test1 = Column(String(255))
+    test2 = Column(String(255))
 
     posts = relationship("PostModel", back_populates="user")
