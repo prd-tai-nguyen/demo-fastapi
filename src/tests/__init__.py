@@ -1,5 +1,5 @@
 from fastapi.testclient import TestClient
-from main import app
+from src.main import app
 
 class BasePytest:
     def _setUp(self):

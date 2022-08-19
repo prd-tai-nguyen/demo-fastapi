@@ -1,0 +1,24 @@
+version: "3.7"
+
+services:
+  mysql-service:
+    image: mysql
+    ports: 
+      - "3306:3306"
+    volumes:
+      - /data/fast-api/db:/data/db
+    environment:
+      MYSQL_ROOT_PASSWORD: 123
+      MYSQL_DATABASE: tests
+
+  api-service:
+    build:
+      context: .
+      dockerfile: ./Dockerfile
+    ports: 
+      - "8000:8000"
+    depends_on:
+      - mysql-service
+    expose:
+      - 8000
+
